@@ -9,35 +9,35 @@ function App() {
   const [search, setSearch] = useState(undefined);
   const [loading, setLoading] = useState(true);
   const [selectedChannel, setSelectedChannel] = useState(null);
+  const [videos, setVideos] = useState([]);
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const response = await fetch("http://localhost:3000/api/videos");
+      const data = await response.json();
+      setVideos(data);
       setLoading(false);
-    }, 5000);
-
-    // Add the 'no-scroll' class to the body when loading is true
-    if (loading) {
-      document.body.classList.add("no-scroll");
-    } else {
-      document.body.classList.remove("no-scroll");
-    }
-
-    return () => {
-      clearTimeout(timeout);
-      document.body.classList.remove("no-scroll"); // Remove the class when the component unmounts
     };
-  }, [loading]);
+
+    fetchData();
+  }, [search, selectedChannel]);
 
   return (
-    <div className="flex items-center w-screen overflow-x-hidden bg-primary">
-      {loading && <Loader />}
-      <SearchContext.Provider value={{ search, setSearch }}>
-        <Navbar setSelectedChannel={setSelectedChannel} />
-        <Home
-          selectedChannel={selectedChannel}
-          setSelectedChannel={setSelectedChannel}
-        />
-      </SearchContext.Provider>
+    <div className="flex items-center h-screen w-screen overflow-x-hidden bg-primary">
+      {loading ? (
+        <Loader />
+      ) : (
+        <SearchContext.Provider value={{ search, setSearch }}>
+          <Navbar setSelectedChannel={setSelectedChannel} />
+          <Home
+            selectedChannel={selectedChannel}
+            setSelectedChannel={setSelectedChannel}
+            videos={videos}
+            setVideos={setVideos}
+          />
+        </SearchContext.Provider>
+      )}
     </div>
   );
 }

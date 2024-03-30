@@ -1,8 +1,10 @@
-# React + Vite
+This is a React + Vite App using Tailwind CSS.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+It uses API fetching to fetch the details of the Videos.
 
-Currently, two official plugins are available:
+To run it Locally:
+1. First run `npm install` in order to install the necessary dependencies specified in the package.json file
+2. In a terminal run `node server.js` in order to run the backend
+3. In another terminal run `npm run dev` 
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Make sure you don't close the terminal specified in step 2 & 3.

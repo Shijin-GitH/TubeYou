@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { SearchContext } from "./SearchContext";
+import Loader from "./Loader";
 
 function formatViews(num) {
   const formatter = new Intl.NumberFormat("en-US", {
@@ -20,14 +21,16 @@ function formatDate(dateString) {
   return formatDistanceToNow(date, { addSuffix: true });
 }
 
-function Videos({ selectedChannel, ...props }) {
-  const [videos, setVideos] = useState([]);
+function Videos({ videos: initialVideos, selectedChannel, ...props }) {
   const { search } = useContext(SearchContext);
+  const [videos, setVideos] = useState(initialVideos); 
+  const [size1000, setSize1000] = useState(false);
   const [size300, setSize300] = useState(false);
   const [size900, setSize900] = useState(false);
   const [size650, setSize650] = useState(false);
   const [size560, setSize560] = useState(false);
   const [size490, setSize490] = useState(false);
+  const [size720, setSize720] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -56,6 +59,16 @@ function Videos({ selectedChannel, ...props }) {
       } else {
         setSize490(false);
       }
+      if (window.innerWidth < 1000) {
+        setSize1000(true);
+      } else {
+        setSize1000(false);
+      }
+      if (window.innerWidth > 720) {
+        setSize720(true);
+      } else {
+        setSize720(false);
+      }
     };
 
     window.addEventListener("resize", handleResize);
@@ -64,37 +77,37 @@ function Videos({ selectedChannel, ...props }) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const fetchData = async (category) => {
-    const response = await fetch("http://localhost:3000/api/videos");
-    let data = await response.json();
-
+  function fetchData(category) {
+    let filteredVideos = [...initialVideos]; // filter the initialVideos
+  
     if (category !== "all") {
-      data = data.filter((video) => video.category === category);
+      filteredVideos = filteredVideos.filter((video) => video.category === category);
     }
-
+  
     if (search && search.trim() !== "") {
-      data = data.filter((video) =>
+      filteredVideos = filteredVideos.filter((video) =>
         video.title.toLowerCase().includes(search.toLowerCase())
       );
     }
-
+  
     if (selectedChannel) {
-      data = data.filter((video) => video.channelName === selectedChannel);
+      filteredVideos = filteredVideos.filter((video) => video.channelName === selectedChannel);
     }
-
-    setVideos(data);
-  };
+  
+    setVideos(filteredVideos);
+  }
 
   useEffect(() => {
     console.log("Fetching data with search:", search);
     fetchData(props.category);
-  }, [props.category, search, selectedChannel]);
+  }, [props.category, search, selectedChannel, initialVideos]);
 
   return (
     <div
       className={`videos flex h-screen bg-primary flex-wrap  mx-2 ${
         size650 ? "-ml-[15vw]" : ""
-      } ${size490 ? "justify-center" : ""}`}
+        } ${size1000 && size720 ? "ml-[5vw]" : ""}
+      ${size490 ? "justify-center" : ""}`}
     >
       {videos.map((video) => (
         <div

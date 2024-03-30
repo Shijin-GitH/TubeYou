@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { SearchContext } from "./SearchContext";
 import Videos from "./Videos";
 
-function Home({ selectedChannel, setSelectedChannel }) {
+function Home({ selectedChannel, setSelectedChannel, setLoading, videos, setVideos}) {
   const { search } = useContext(SearchContext);
   const categories = ["All", "Gaming", "Music", "Tech"];
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -11,6 +11,8 @@ function Home({ selectedChannel, setSelectedChannel }) {
   const [size350, setSize350] = useState(false);
   const [size900, setSize900] = useState(false);
   const [size650, setSize650] = useState(false);
+  const [size1000, setSize1000] = useState(false);
+  const [size400, setSize400] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -34,6 +36,16 @@ function Home({ selectedChannel, setSelectedChannel }) {
       } else {
         setSize650(false);
       }
+      if (window.innerWidth < 1000) {
+        setSize1000(true);
+      } else {
+        setSize1000(false);
+      }
+      if (window.innerWidth < 400) {
+        setSize400(true);
+      } else {
+        setSize400(false);
+      }
     };
 
     window.addEventListener("resize", handleResize);
@@ -43,11 +55,12 @@ function Home({ selectedChannel, setSelectedChannel }) {
   }, []);
 
   return (
-    <div className="Home h-screen w-screen  pt-[10vh] bg-primary flex flex-col mt-5 space-y-8">
+    <div className="Home h-screen w-[85vw] pt-[10vh] bg-primary flex flex-col mt-9 space-y-8">
       <div
         className={`categories flex w-screen h-[4vh]  ${
           size900 ? "ml-[5vw]" : ""
-        } ${size650 ? "-ml-[10vw]" : ""} ${size450 ? "-ml-5" : ""}`}
+          } ${size1000 ? "ml-[5vw]" : ""}
+        ${size650 ? "-ml-[10vw]" : ""} ${size450 ? "-ml-5" : ""} ${size400 ? "-ml-[5vw]" : ""}`}
       >
         {categories.map((category, index) => (
           <div
@@ -70,6 +83,9 @@ function Home({ selectedChannel, setSelectedChannel }) {
         category={selectedCategory}
         search={search}
         selectedChannel={selectedChannel}
+        setLoading={setLoading}
+        videos={videos}
+        setVideos={setVideos}
       />
     </div>
   );
