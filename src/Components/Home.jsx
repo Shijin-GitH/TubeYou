@@ -3,10 +3,17 @@ import { useContext } from "react";
 import { SearchContext } from "./SearchContext";
 import Videos from "./Videos";
 
-function Home({ selectedChannel, setSelectedChannel, setLoading, videos, setVideos}) {
+function Home({
+  selectedChannel,
+  setSelectedChannel,
+  setLoading,
+  videos,
+  setVideos,
+}) {
   const { search } = useContext(SearchContext);
   const categories = ["All", "Gaming", "Music", "Tech"];
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [currentCategory, setcurrentCategory] = useState(0);
   const [size450, setSize450] = useState(false);
   const [size350, setSize350] = useState(false);
   const [size900, setSize900] = useState(false);
@@ -59,17 +66,22 @@ function Home({ selectedChannel, setSelectedChannel, setLoading, videos, setVide
       <div
         className={`categories flex w-screen h-[4vh]  ${
           size900 ? "ml-[5vw]" : ""
-          } ${size1000 ? "ml-[5vw]" : ""}
-        ${size650 ? "-ml-[10vw]" : ""} ${size450 ? "-ml-5" : ""} ${size400 ? "-ml-[5vw]" : ""}`}
+        } ${size1000 ? "ml-[5vw]" : ""}
+        ${size650 ? "-ml-[10vw]" : ""} ${size450 ? "-ml-5" : ""} ${
+          size400 ? "-ml-[5vw]" : ""
+        } ${size350 ? "-ml-8" : ""}`}
       >
         {categories.map((category, index) => (
           <div
             key={index}
-            className={`px-3 mx-2 bg-[#acbdba] rounded-md cursor-pointer hover:bg-yellow-50 ${
+            className={`px-3 mx-2 bg-[#acbdba] rounded-md cursor-pointer hover:bg-gray-800 hover:text-white ${
               size450 ? "text-sm" : ""
-            } ${size350 ? "text-[3.5vw]" : ""}`}
+            } ${size350 ? "text-[3.5vw]" : ""} ${
+              index === currentCategory ? "bg-gray-800 text-white" : ""
+            }`}
             onClick={() => {
               setSelectedCategory(category.toLowerCase());
+              setcurrentCategory(index);
               if (category.toLowerCase() === "all") {
                 setSelectedChannel(null);
               }

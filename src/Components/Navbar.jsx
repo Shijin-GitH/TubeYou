@@ -16,7 +16,7 @@ function Navbar({ setSelectedChannel }) {
   const [size450, setSize450] = useState(false);
   const [size1000, setSize1000] = useState(false);
   const [translate, setTranslate] = useState(false);
-
+ 
   const toggleTranslate = () => {
     setTranslate(!translate);
   };
