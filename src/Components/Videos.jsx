@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { SearchContext } from "./SearchContext";
-import Loader from "./Loader";
 
 function formatViews(num) {
   const formatter = new Intl.NumberFormat("en-US", {

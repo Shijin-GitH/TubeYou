@@ -14,7 +14,7 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const response = await fetch("http://localhost:3000/api/videos");
+      const response = await fetch("https://ypapi.formz.in/api/public/videos");
       const data = await response.json();
       setVideos(data);
       setLoading(false);
@@ -34,7 +34,6 @@ function App() {
             selectedChannel={selectedChannel}
             setSelectedChannel={setSelectedChannel}
             videos={videos}
-            setVideos={setVideos}
           />
         </SearchContext.Provider>
       )}

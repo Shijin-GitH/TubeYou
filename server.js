@@ -1,3 +1,7 @@
+// Code to run a simple express server that makes a request to another server and returns the response to the client in order to avoid CORS issues.
+// No longer needed as package.json has been updated to run on port 3000
+
+
 import express from 'express';
 import fetch from 'node-fetch';
 import cors from 'cors';

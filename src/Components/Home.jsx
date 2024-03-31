@@ -8,7 +8,6 @@ function Home({
   setSelectedChannel,
   setLoading,
   videos,
-  setVideos,
 }) {
   const { search } = useContext(SearchContext);
   const categories = ["All", "Gaming", "Music", "Tech"];
@@ -95,9 +94,7 @@ function Home({
         category={selectedCategory}
         search={search}
         selectedChannel={selectedChannel}
-        setLoading={setLoading}
         videos={videos}
-        setVideos={setVideos}
       />
     </div>
   );
